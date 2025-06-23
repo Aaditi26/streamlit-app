@@ -436,7 +436,7 @@ class PDF(FPDF):
 
         keys = list(data_list[0].keys())
         col_width = max(30, (self.w - 2 * self.l_margin)/ min(len(keys), 6))  # reasonable width per column
-        columns_per_page = int(self.epw // col_width)
+        columns_per_page = int((self.w - 2 * self.l_margin) // col_width)
         total_pages = math.ceil(len(keys) / columns_per_page)
 
         for page in range(total_pages):
