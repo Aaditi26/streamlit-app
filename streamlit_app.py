@@ -242,9 +242,9 @@ def Machining():
         elif  ptype == "Chamfering":
             col1, col2 = st.columns(2)
             with col1:
-                time = st.number_input(f"Time Taken (min)", key=f"chamfer_time_{i}", value=35.0)
+                time = st.number_input(f"Time Taken (min)", key=f"chamfer_time_{i}", value=5.0)
             with col2:    
-                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"chamfer_cost_{i}", value=50.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"chamfer_cost_{i}", value=10.0)
             entry.update({"time_min": time, "cost_per_hr": cost_hr})
         
         elif  ptype == "Parting":
