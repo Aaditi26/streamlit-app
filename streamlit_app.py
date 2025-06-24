@@ -46,8 +46,8 @@ def Machining():
 
     # --- Step 0: Material & Labor Costs ---
     st.header("📦 Cost Inputs")
-    material_cost = st.number_input("Enter Material Cost (Rs.)", value=1000.0, step=100.0)
-    labor_cost_per_hour = st.number_input("Enter Labor Cost per Hour (Rs.)", value=500.0, step=50.0)
+    material_cost = st.number_input("Material Cost (Rs.)", value=1000.0, step=100.0)
+    labor_cost_per_hour = st.number_input("Labor Cost per Hour (Rs.)", value=500.0, step=50.0)
 
     # Step 1: Process selection + Add button
     col1, col2 = st.columns(2)
@@ -80,7 +80,7 @@ def Machining():
                 di = st.number_input(f"Initial Diameter (mm)", key=f"bore_di_{i}", value=25)
                 df = st.number_input(f"Final Diameter (mm)", key=f"bore_df_{i}", value=28)
                 d = st.number_input(f"Boring Depth (mm)", key=f"bore_d_{i}", value=12)
-                f = st.number_input(f"Feed (mm/min)", key=f"bore_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"bore_f_{i}", value=0.16)
             with col2:
                 a = st.number_input(f"Drill Angle (degree)", key=f"bore_a_{i}", value=118)
                 n = st.number_input(f"RPM", key=f"bore_n_{i}", value=170)
@@ -92,7 +92,7 @@ def Machining():
             col1, col2 = st.columns(2)
             with col1:
                 d = st.number_input(f"Drilling Depth (mm)", key=f"drill_d_{i}", value=12)
-                f = st.number_input(f"Feed (mm/min)", key=f"drill_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"drill_f_{i}", value=0.16)
                 tu = st.number_input(f"Num of times drilled", key=f"drill_tu_{i}", value=5)
             with col2:    
                 n = st.number_input(f"RPM", key=f"drill_n_{i}", value=170)
@@ -104,7 +104,7 @@ def Machining():
             with col1:
                 d = st.number_input(f"Facing Diameter (mm)", key=f"face_d_{i}", value=50)
                 l = st.number_input(f"Facing Lenght (mm)", key=f"face_l_{i}", value=7)
-                f = st.number_input(f"Feed (mm/min)", key=f"face_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"face_f_{i}", value=0.16)
             with col2:    
                 n = st.number_input(f"RPM", key=f"face_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"face_doc_{i}", value=2)
@@ -128,7 +128,7 @@ def Machining():
             col1, col2 = st.columns(2)
             with col1:
                 l = st.number_input(f"Knurling Lenght (mm)", key=f"knurl_l_{i}", value=20)
-                f = st.number_input(f"Feed (mm/min)", key=f"knurl_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"knurl_f_{i}", value=0.16)
                 n = st.number_input(f"RPM", key=f"knurl_n_{i}", value=170)
             with col2:
                 doc = st.number_input(f"Depth of cut (mm)", key=f"knurl_doc_{i}", value=0.1)
@@ -139,7 +139,7 @@ def Machining():
             col1, col2 = st.columns(2)
             with col1:
                 d = st.number_input(f"Reaming Lenght (mm)", key=f"ream_l_{i}", value=20)
-                f = st.number_input(f"Feed (mm/min)", key=f"ream_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"ream_f_{i}", value=0.16)
                 n = st.number_input(f"RPM", key=f"ream_n_{i}", value=170)
             with col2:
                 doc = st.number_input(f"Depth of cut (mm)", key=f"ream_doc_{i}", value=0.1)
@@ -151,7 +151,7 @@ def Machining():
             with col1:
                 p = st.number_input(f"Thread Pitch (TPI)", key=f"thread_p_{i}", value=2)
                 l = st.number_input(f"Thread Lenght (mm)", key=f"thread_l_{i}", value=12)
-                f = st.number_input(f"Feed (mm/min)", key=f"thread_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"thread_f_{i}", value=0.16)
             with col2:
                 n = st.number_input(f"RPM", key=f"thread_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"thread_doc_{i}", value=0.1)
@@ -164,7 +164,7 @@ def Machining():
                 d = st.number_input(f"Diameter (mm)", key=f"turn_cave_d_{i}", value=50)
                 a = st.number_input(f"Conacve Angle (Degree)", key=f"turn_cave_a_{i}", value=20)
                 l = st.number_input(f"Turning Lenght (mm)", key=f"turn_cave_l_{i}", value=25)
-                f = st.number_input(f"Feed (mm/min)", key=f"turn_cave_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"turn_cave_f_{i}", value=0.16)
             with col2:
                 n = st.number_input(f"RPM", key=f"tur_caven_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"turn_cave_doc_{i}", value=1)
@@ -177,7 +177,7 @@ def Machining():
                 d = st.number_input(f"Diameter (mm)", key=f"turn_vex_d_{i}", value=50)
                 a = st.number_input(f"Convex Angle (Degree)", key=f"turn_vex_a_{i}", value=20)
                 l = st.number_input(f"Turning Lenght (mm)", key=f"turn_vex_l_{i}", value=25)
-                f = st.number_input(f"Feed (mm/min)", key=f"turn_vex_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"turn_vex_f_{i}", value=0.16)
             with col2:
                 n = st.number_input(f"RPM", key=f"turn_vex_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"turn_vex_doc_{i}", value=1)
@@ -190,7 +190,7 @@ def Machining():
                 di = st.number_input(f"Initial Diameter (mm)", key=f"turn_di_{i}", value=50)
                 df = st.number_input(f"Final Diameter (mm)", key=f"turn_df_{i}", value=38)
                 l = st.number_input(f"Turning Lenght (mm)", key=f"turn_l_{i}", value=25)
-                f = st.number_input(f"Feed (mm/min)", key=f"turn_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"turn_f_{i}", value=0.16)
             with col2:
                 n = st.number_input(f"RPM", key=f"turn_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"turn_doc_{i}", value=1)
@@ -203,7 +203,7 @@ def Machining():
                 dl = st.number_input(f"Larger Diameter (mm)", key=f"turn_taper_dl_{i}", value=50)
                 ds = st.number_input(f"Smaller Diameter (mm)", key=f"turn_taper_ds_{i}", value=38)
                 l = st.number_input(f"Turning Lenght (mm)", key=f"turn_taper_l_{i}", value=25)
-                f = st.number_input(f"Feed (mm/min)", key=f"turn_taper_f_{i}", value=0.16)
+                f = st.number_input(f"Feed (mm/rev)", key=f"turn_taper_f_{i}", value=0.16)
             with col2:
                 n = st.number_input(f"RPM", key=f"turn_taper_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm)", key=f"turn_taper_doc_{i}", value=1)
@@ -228,7 +228,7 @@ def Machining():
                 custom_name = st.text_input(f"Enter Custom Process Name", key=f"custom_name_{i}", value=f"Custom #{i+1}")
             with col2:
                 time = st.number_input(f"Time Taken (min)", key=f"custom_time_{i}", value=10.0)
-                cost_hr = st.number_input(f"Cost per Hour (Rs.)", key=f"custom_cost_{i}", value=100.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"custom_cost_{i}", value=100.0)
                 entry.update({"custom_name": custom_name, "time_min": time, "cost_per_hr": cost_hr})
         
         elif  ptype == "Blanking":
@@ -236,7 +236,7 @@ def Machining():
             with col1:
                 time = st.number_input(f"Time Taken (min)", key=f"blank_time_{i}", value=15.0)
             with col2:    
-                cost_hr = st.number_input(f"Cost per Hour (Rs.)", key=f"blank_cost_{i}", value=50.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"blank_cost_{i}", value=50.0)
             entry.update({"time_min": time, "cost_per_hr": cost_hr})
         
         elif  ptype == "Chamfering":
@@ -244,7 +244,7 @@ def Machining():
             with col1:
                 time = st.number_input(f"Time Taken (min)", key=f"chamfer_time_{i}", value=35.0)
             with col2:    
-                cost_hr = st.number_input(f"Cost per Hour (Rs.)", key=f"chamfer_cost_{i}", value=50.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"chamfer_cost_{i}", value=50.0)
             entry.update({"time_min": time, "cost_per_hr": cost_hr})
         
         elif  ptype == "Parting":
@@ -252,7 +252,7 @@ def Machining():
             with col1:
                 time = st.number_input(f"Time Taken (min)", key=f"part_time_{i}", value=20.0)
             with col2:    
-                cost_hr = st.number_input(f"Cost per Hour (Rs.)", key=f"part_cost_{i}", value=50.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"part_cost_{i}", value=50.0)
             entry.update({"time_min": time, "cost_per_hr": cost_hr})
         
         elif  ptype == "Resharpening":
@@ -260,7 +260,7 @@ def Machining():
             with col1:
                 time = st.number_input(f"Time Taken (min)", key=f"resharp_time_{i}", value=35.0)
             with col2:    
-                cost_hr = st.number_input(f"Cost per Hour (Rs.)", key=f"resharp_cost_{i}", value=50.0)
+                cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"resharp_cost_{i}", value=50.0)
             entry.update({"time_min": time, "cost_per_hr": cost_hr})
 
         if st.button(f"❌ Remove!", key=f"remove!_{i}"):
@@ -562,7 +562,7 @@ def Result():
     st.success(f"👷 Labor Cost: Rs. {st.session_state.labor_cost:.2f}")
     st.success(f"📦 Material Cost: Rs. {st.session_state.material_cost:.2f}")
     st.success(f"🧰 Tool Cost: Rs. {st.session_state.tool_cost:.2f}")
-    st.success(f"➕ Extra Process Cost: Rs. {st.session_state.total_extra_cost:.2f}")
+    st.success(f"➕ Extra Process Tool Cost: Rs. {st.session_state.total_extra_cost:.2f}")
     st.header(f"💰 Total Estimated Cost: Rs. {st.session_state.total_cost:.2f}")
 
     st.markdown("---")
