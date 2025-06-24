@@ -27,7 +27,7 @@ def Home():
         - Export data as PDF
 
         ---
-        **Developed by an IIT Kharagpur student**
+        **Developed by IIT Kharagpur students**
         """)
     st.info("👉 Go to the **Machining** tab to get started.")
 
@@ -229,7 +229,7 @@ def Machining():
             with col2:
                 time = st.number_input(f"Time Taken (min)", key=f"custom_time_{i}", value=10.0)
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"custom_cost_{i}", value=100.0)
-                entry.update({"custom_name": custom_name, "time_min": time, "cost_per_hr": cost_hr})
+                entry.update({"custom_name": custom_name, "time_min": time, "extra_tool_cost": cost_hr})
         
         elif  ptype == "Blanking":
             col1, col2 = st.columns(2)
@@ -237,7 +237,7 @@ def Machining():
                 time = st.number_input(f"Time Taken (min)", key=f"blank_time_{i}", value=15.0)
             with col2:    
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"blank_cost_{i}", value=50.0)
-            entry.update({"time_min": time, "cost_per_hr": cost_hr})
+            entry.update({"time_min": time, "extra_tool_cost": cost_hr})
         
         elif  ptype == "Chamfering":
             col1, col2 = st.columns(2)
@@ -245,7 +245,7 @@ def Machining():
                 time = st.number_input(f"Time Taken (min)", key=f"chamfer_time_{i}", value=5.0)
             with col2:    
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"chamfer_cost_{i}", value=10.0)
-            entry.update({"time_min": time, "cost_per_hr": cost_hr})
+            entry.update({"time_min": time, "extra_tool_cost": cost_hr})
         
         elif  ptype == "Parting":
             col1, col2 = st.columns(2)
@@ -253,7 +253,7 @@ def Machining():
                 time = st.number_input(f"Time Taken (min)", key=f"part_time_{i}", value=20.0)
             with col2:    
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"part_cost_{i}", value=50.0)
-            entry.update({"time_min": time, "cost_per_hr": cost_hr})
+            entry.update({"time_min": time, "extra_tool_cost": cost_hr})
         
         elif  ptype == "Resharpening":
             col1, col2 = st.columns(2)
@@ -261,7 +261,7 @@ def Machining():
                 time = st.number_input(f"Time Taken (min)", key=f"resharp_time_{i}", value=35.0)
             with col2:    
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"resharp_cost_{i}", value=50.0)
-            entry.update({"time_min": time, "cost_per_hr": cost_hr})
+            entry.update({"time_min": time, "extra_tool_cost": cost_hr})
 
         if st.button(f"❌ Remove!", key=f"remove!_{i}"):
             st.session_state.extra_entries.pop(i)
@@ -374,12 +374,11 @@ def Machining():
         for i, entry in enumerate(st.session_state.extra_entries):
             ptype = entry["type"]
             minutes = entry.get("time_min", 0.0)
-            cost_hr = entry.get("cost_per_hr", 0.0)
-            cost = (minutes / 60) * cost_hr
+            cost_hr = entry.get("extra_tool_cost", 0.0)
 
             minutes_with_overhead = minutes + 5
             total_time_min += minutes_with_overhead
-            total_extra_cost += cost
+            total_extra_cost += cost_hr
 
             # Handle label
             if ptype == "Custom":
@@ -391,7 +390,7 @@ def Machining():
                 "ptype": label,
                 "index": i + 1,
                 "time": minutes_with_overhead,
-                "cost": cost
+                "cost": cost_hr
             })
 
 
@@ -435,8 +434,8 @@ class PDF(FPDF):
         self.ln(2)
 
         keys = list(data_list[0].keys())
-        col_width = max(30, (self.w - 2 * self.l_margin)/ min(len(keys), 6))  # reasonable width per column
-        columns_per_page = int((self.w - 2 * self.l_margin) // col_width)
+        col_width = max(30, self.epw / min(len(keys), 6))  # reasonable width per column
+        columns_per_page = int(self.epw // col_width)
         total_pages = math.ceil(len(keys) / columns_per_page)
 
         for page in range(total_pages):
