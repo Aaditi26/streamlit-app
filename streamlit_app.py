@@ -138,7 +138,7 @@ def Machining():
         elif entry ["type"] == "Reaming":
             col1, col2 = st.columns(2)
             with col1:
-                d = st.number_input(f"Reaming Lenght (mm)", key=f"ream_l_{i}", value=20)
+                l = st.number_input(f"Reaming Lenght (mm)", key=f"ream_l_{i}", value=20)
                 f = st.number_input(f"Feed (mm/rev)", key=f"ream_f_{i}", value=0.16)
                 n = st.number_input(f"RPM", key=f"ream_n_{i}", value=170)
             with col2:
