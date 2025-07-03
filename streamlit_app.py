@@ -422,7 +422,7 @@ def Machining():
             
             elif process_type == "Knurling":
                 try:
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * 4)) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * 2)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
