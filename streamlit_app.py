@@ -416,7 +416,7 @@ def Machining():
             elif process_type == "Grooving":
                 try:
                     turn = (entry["length"]) / (entry["tool width"])
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["final diameter"] - entry["initial diameter"])) / (entry["feed"] * entry["rpm"] * 2)) * turn)) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + ((entry["final diameter"] - entry["initial diameter"]) / 2)) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
