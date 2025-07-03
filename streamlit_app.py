@@ -152,7 +152,7 @@ def Machining():
             col1, col2 = st.columns(2)
             with col1:
                 d = st.number_input(f"Facing Diameter (mm)", key=f"face_d_{i}", value=50.00)
-                l = st.number_input(f"Facing Lenght (mm)", key=f"face_l_{i}", value=7.00)
+                l = st.number_input(f"Facing Lenght (mm)", key=f"face_l_{i}", value=10.00)
                 f = st.number_input(f"Feed (mm/rev)", key=f"face_f_{i}", value=0.16)
                 n = st.number_input(f"RPM", key=f"face_n_{i}", value=170)
                 doc = st.number_input(f"Depth of cut (mm/pass)", key=f"face_doc_{i}", value=2.00)
@@ -168,13 +168,13 @@ def Machining():
             col1, col2 = st.columns(2)
             with col1:
                 di = st.number_input(f"Initial Diameter(mm)", key=f"groove_di_{i}", value=28.00)
-                df = st.number_input(f"Final Diameter(mm)", key=f"groove_df_{i}", value=30.00)
-                l = st.number_input(f"Groove Length", key=f"groove_l_{i}", value=10.00)
+                df = st.number_input(f"Final Diameter(mm)", key=f"groove_df_{i}", value=28.50)
+                l = st.number_input(f"Groove Length", key=f"groove_l_{i}", value=2.00)
                 f = st.number_input(f"Feed (mm/rev)", key=f"groove_f_{i}", value=0.16)
                 n = st.number_input(f"RPM", key=f"groove_pn_{i}", value=170)
-                w = st.number_input(f"Tool Width (mm)", key=f"groove_w_{i}", value=1.00)
+                w = st.number_input(f"Tool Width (mm)", key=f"groove_w_{i}", value=2.00)
             with col2:          
-                doc = st.number_input(f"Depth of Cut (mm/pass)", key=f"groove_pdoc_{i}", value=1.00)  
+                doc = st.number_input(f"Depth of Cut (mm/pass)", key=f"groove_pdoc_{i}", value=0.10)  
                 js = st.number_input(f"Job Setting Time (min)", key=f"groove_js_{i}", value=0.00)
                 ts = st.number_input(f"Tool Setting Time (min)", key=f"groove_ts_{i}", value=5.00) 
                 a = st.number_input(f"Approach (mm)", key=f"groove_a_{i}", value=10.00)
@@ -185,9 +185,9 @@ def Machining():
         elif entry ["type"] == "Knurling":
             col1, col2 = st.columns(2)
             with col1:
-                l = st.number_input(f"Knurling Lenght (mm)", key=f"knurl_l_{i}", value=20.00)
-                f = st.number_input(f"Feed (mm/rev)", key=f"knurl_f_{i}", value=0.16)
-                n = st.number_input(f"RPM", key=f"knurl_n_{i}", value=170)
+                l = st.number_input(f"Knurling Lenght (mm)", key=f"knurl_l_{i}", value=18.00)
+                f = st.number_input(f"Feed (mm/rev)", key=f"knurl_f_{i}", value=0.20)
+                n = st.number_input(f"RPM", key=f"knurl_n_{i}", value=60)
                 doc = st.number_input(f"Depth of cut (mm/pass)", key=f"knurl_doc_{i}", value=0.10)
                 js = st.number_input(f"Job Setting Time (min)", key=f"knurl_js_{i}", value=0.00)
             with col2:
@@ -219,8 +219,8 @@ def Machining():
             with col1:
                 p = st.number_input(f"Thread Pitch (TPI)", key=f"thread_p_{i}", value=2.00)
                 l = st.number_input(f"Thread Lenght (mm)", key=f"thread_l_{i}", value=12.00)
-                f = st.number_input(f"Feed (mm/rev)", key=f"thread_f_{i}", value=0.16)
-                n = st.number_input(f"RPM", key=f"thread_n_{i}", value=170)
+                f = st.number_input(f"Feed (mm/rev)", key=f"thread_f_{i}", value=0.20)
+                n = st.number_input(f"RPM", key=f"thread_n_{i}", value=60)
                 doc = st.number_input(f"Depth of cut (mm/pass)", key=f"thread_doc_{i}", value=0.10)
             with col2:
                 js = st.number_input(f"Job Setting Time (min)", key=f"thread_js_{i}", value=0.00)
@@ -315,7 +315,7 @@ def Machining():
             with col1:
                 custom_name = st.text_input(f"Enter Custom Process Name", key=f"custom_name_{i}", value=f"Custom #{i+1}")
             with col2:
-                time = st.number_input(f"Time Taken (min)", key=f"custom_time_{i}", value=10.00)
+                time = st.number_input(f"Time Taken (min)", key=f"custom_time_{i}", value=5.00)
                 cost_hr = st.number_input(f"Extra Tool Cost (Rs.)", key=f"custom_cost_{i}", value=100.00)
                 entry.update({"custom_name": custom_name, "time_min": time, "extra_tool_cost": cost_hr})
         
