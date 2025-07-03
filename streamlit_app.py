@@ -349,7 +349,7 @@ def Machining():
                     a = math.radians((180 - entry["angle"]) / 2)
                     extra_length = (entry["initial diameter"] / 2) * (math.tan(a))
                     turn = (entry["final diameter"] - entry["initial diameter"]) / ((entry["depth of cut"]) * 2)
-                    time = (((entry["approach"] + entry["overrun"] + (entry["depth"])) / (entry["rpm"] * entry["feed"]) * (turn * 2)) + ((10 + (entry["depth"])) / (285 * entry["feed"])) + (((10 + extra_length) / (entry["feed"] * entry["rpm"])) * (turn * 2))) + (entry["job set time"] + entry["tool set time"])
+                    time = (((entry["approach"] + entry["overrun"] + (entry["depth"])) / (entry["rpm"] * entry["feed"]) * (turn * 2)) + (((10 + extra_length) / (entry["feed"] * entry["rpm"])) * (turn * 2))) + (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
@@ -363,34 +363,34 @@ def Machining():
             elif process_type == "Facing":
                 try:
                     turn = (entry["length"]/entry["depth of cut"]) 
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["diameter"] / 2)) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + (entry["diameter"] / 2)) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["diameter"] / 2)) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
         
             elif process_type == "Grooving":
                 try:
                     turn = (entry["length"]) / (entry["tool width"])
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["final diameter"] - entry["initial diameter"])) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + (entry["final diameter"] - entry["initial diameter"])) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["final diameter"] - entry["initial diameter"])) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
             elif process_type == "Knurling":
                 try:
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * 4) + ((20 + (entry["length"])) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * 4)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
             elif process_type == "Reaming":
                 try:
                     turn = (entry["final diameter"] - entry["initial diameter"]) / (2 * entry["depth of cut"])
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + (entry["length"])) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
             elif process_type == "Threading":
                 try:
                     turn = (0.6134 * entry["pitch"]) / (entry["depth of cut"])
-                    time = (((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["rpm"] * entry["feed"]) * (turn)) + ((10 + (entry["length"])) / (285 * entry["feed"]))) +  (entry["job set time"] + entry["tool set time"]) 
+                    time = (((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["rpm"] * entry["feed"]) * (turn))) +  (entry["job set time"] + entry["tool set time"]) 
                 except ZeroDivisionError:
                     time = 0
             
@@ -398,7 +398,7 @@ def Machining():
                 try:
                     concave_length = entry["length"] * (math.radians(entry["angle"]))
                     turn = (entry["diameter"]) / (entry["depth of cut"] * 4) 
-                    time = ((((entry["approach"] + entry["overrun"] + concave_length) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + concave_length) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + concave_length) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
 
@@ -406,14 +406,14 @@ def Machining():
                 try:
                     convex_length = entry["length"] * (math.radians(entry["angle"]))
                     turn = (entry["diameter"]) / (entry["depth of cut"] * 4) 
-                    time = ((((entry["approach"] + entry["overrun"] + convex_length) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + convex_length) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + convex_length) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
             elif process_type == "Turning - Straight":
                 try:
                     turn = ((entry["initial diameter"]) - (entry["final diameter"])) / ((entry["depth of cut"]) * 2) 
-                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + (entry["length"])) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
 
@@ -421,7 +421,7 @@ def Machining():
                 try:
                     h_length = math.sqrt(((entry["length"]) ** 2) + (((entry["larger diameter"] - entry["smaller diameter"]) / 2) ** 2))
                     turn = (((entry["larger diameter"]) - (entry["smaller diameter"])) / ((entry["depth of cut"]) * 2)) 
-                    time = ((((entry["approach"] + entry["overrun"] + h_length) / (entry["feed"] * entry["rpm"])) * turn) + ((20 + h_length) / (entry["feed"] * 285))) +  (entry["job set time"] + entry["tool set time"])
+                    time = ((((entry["approach"] + entry["overrun"] + h_length) / (entry["feed"] * entry["rpm"])) * turn)) +  (entry["job set time"] + entry["tool set time"])
                 except ZeroDivisionError:
                     time = 0
             
