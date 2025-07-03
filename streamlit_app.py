@@ -62,7 +62,7 @@ def Machining():
 
     with col1:
         st.subheader("⚙️ Machining Processes")
-        machining_options = [ "Boring", "Drilling", "Facing", "Grooving", "Knurling", "Reaming", "Threading", "Turning - Concave", "Turning - Convex", "Turning - Straight", "Turning - Taper"]
+        machining_options = [ "Boring", "Drilling - Center", "Drilling - Pilot", "Drilling - Main", "Facing", "Grooving", "Knurling", "Reaming", "Threading", "Turning - Concave", "Turning - Convex", "Turning - Straight", "Turning - Taper"]
         selected_machining = st.selectbox("Select a Process", machining_options, key="machining_select")
         if st.button("Add Machining Process"):
             st.session_state.machining_entries.append({"type": selected_machining})
@@ -100,7 +100,23 @@ def Machining():
                 t = st.number_input(f"Tool Cost (Rs)", key=f"bore_t_{i}", value=10.00)
             entry.update({"initial diameter": di, "final diameter": df, "depth": d, "feed": f, "angle": an, "rpm": n, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
         
-        elif entry ["type"] == "Drilling":
+        elif entry ["type"] == "Drilling - Center":
+            col1, col2 = st.columns(2)
+            with col1:
+                l = st.number_input(f"Drilling Depth (mm)", key=f"drill_l_{i}", value=5.00)
+                f = st.number_input(f"Feed (mm/rev)", key=f"drill_f_{i}", value=0.16)
+                n = st.number_input(f"RPM", key=f"drill_n_{i}", value=170)
+                tu = st.number_input(f"Num of times drilled", key=f"drill_tu_{i}", value=4)
+                d = st.number_input(f"Drill Diameter", key=f"drill_d_{i}", value=6.00)
+            with col2: 
+                js = st.number_input(f"Job Setting Time (min)", key=f"drill_js_{i}", value=0.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"drill_ts_{i}", value=5.00) 
+                a = st.number_input(f"Approach (mm)", key=f"drill_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"drill_o_{i}", value=0.00) 
+                t = st.number_input(f"Tool Cost (Rs)", key=f"drill_t_{i}", value=10.00)
+            entry.update({"depth": l, "feed": f, "diameter":d, "rpm": n, "turn": tu, "job set time": js, "tool set time": ts,  "approach": a, "overrun": o, "tool cost": t})    
+        
+        elif entry ["type"] == "Drilling - Pilot":
             col1, col2 = st.columns(2)
             with col1:
                 l = st.number_input(f"Drilling Depth (mm)", key=f"drill_l_{i}", value=12.00)
@@ -108,6 +124,22 @@ def Machining():
                 n = st.number_input(f"RPM", key=f"drill_n_{i}", value=170)
                 tu = st.number_input(f"Num of times drilled", key=f"drill_tu_{i}", value=5)
                 d = st.number_input(f"Drill Diameter", key=f"drill_d_{i}", value=15.00)
+            with col2: 
+                js = st.number_input(f"Job Setting Time (min)", key=f"drill_js_{i}", value=0.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"drill_ts_{i}", value=5.00) 
+                a = st.number_input(f"Approach (mm)", key=f"drill_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"drill_o_{i}", value=0.00) 
+                t = st.number_input(f"Tool Cost (Rs)", key=f"drill_t_{i}", value=10.00)
+            entry.update({"depth": l, "feed": f, "diameter":d, "rpm": n, "turn": tu, "job set time": js, "tool set time": ts,  "approach": a, "overrun": o, "tool cost": t})    
+        
+        elif entry ["type"] == "Drilling - Main":
+            col1, col2 = st.columns(2)
+            with col1:
+                l = st.number_input(f"Drilling Depth (mm)", key=f"drill_l_{i}", value=12.00)
+                f = st.number_input(f"Feed (mm/rev)", key=f"drill_f_{i}", value=0.16)
+                n = st.number_input(f"RPM", key=f"drill_n_{i}", value=170)
+                tu = st.number_input(f"Num of times drilled", key=f"drill_tu_{i}", value=7)
+                d = st.number_input(f"Drill Diameter", key=f"drill_d_{i}", value=25.00)
             with col2: 
                 js = st.number_input(f"Job Setting Time (min)", key=f"drill_js_{i}", value=0.00)
                 ts = st.number_input(f"Tool Setting Time (min)", key=f"drill_ts_{i}", value=5.00) 
@@ -353,7 +385,21 @@ def Machining():
                 except ZeroDivisionError:
                     time = 0
             
-            elif process_type == "Drilling":
+            elif process_type == "Drilling - Center":
+                try:
+                    drill_length = ((entry["diameter"] / 2) * (math.tan(math.radians((180 - 118) / 2)))) + entry["depth"]
+                    time = ((entry["approach"] + entry["overrun"] + drill_length) / (entry["rpm"] * entry["feed"]) * (entry["turn"])) +  (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0
+
+            elif process_type == "Drilling - Pilot":
+                try:
+                    drill_length = ((entry["diameter"] / 2) * (math.tan(math.radians((180 - 118) / 2)))) + entry["depth"]
+                    time = ((entry["approach"] + entry["overrun"] + drill_length) / (entry["rpm"] * entry["feed"]) * (entry["turn"])) +  (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0
+
+            elif process_type == "Drilling - Main":
                 try:
                     drill_length = ((entry["diameter"] / 2) * (math.tan(math.radians((180 - 118) / 2)))) + entry["depth"]
                     time = ((entry["approach"] + entry["overrun"] + drill_length) / (entry["rpm"] * entry["feed"]) * (entry["turn"])) +  (entry["job set time"] + entry["tool set time"])
