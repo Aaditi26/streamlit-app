@@ -653,11 +653,17 @@ def generate_pdf():
     # Save and offer download
     from io import BytesIO
 
+    # Generate PDF content as string, then encode to bytes
+    pdf_data = pdf.output(dest='S').encode('latin1')
+
+    # Write to in-memory buffer
     pdf_buffer = BytesIO()
-    pdf.output(pdf_buffer)
+    pdf_buffer.write(pdf_data)
     pdf_buffer.seek(0)
 
-    st.download_button(label="⬇️ Download Full PDF", data=pdf_buffer, file_name="machining_full_result.pdf", mime="application/pdf" )
+    # Streamlit download button
+    st.download_button( label="⬇️ Download Full PDF", data=pdf_buffer, file_name="machining_full_result.pdf", mime="application/pdf" )
+
 
 def Result():
     st.header("📄 Route Sheet / Results")
