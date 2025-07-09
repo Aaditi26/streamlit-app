@@ -651,13 +651,13 @@ def generate_pdf():
     #pdf.table("Extra Process Entries", st.session_state.extra_entries)
 
     # Save and offer download
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
-        pdf.output(tmpfile.name)
-        with open(tmpfile.name, "rb") as f:
-            st.download_button("⬇️ Download Full PDF", f, file_name="machining_full_result.pdf")
-    os.unlink(tmpfile.name)
+    from io import BytesIO
 
+    pdf_buffer = BytesIO()
+    pdf.output(pdf_buffer)
+    pdf_buffer.seek(0)
 
+    st.download_button(label="⬇️ Download Full PDF", data=pdf_buffer, file_name="machining_full_result.pdf", mime="application/pdf" )
 
 def Result():
     st.header("📄 Route Sheet / Results")
