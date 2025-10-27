@@ -34,17 +34,19 @@ def Home():
 
 
 def Machining():
-    st.header("Machining")
+    #st.header("Machining")
 
     # Initialize session state
     if "job_material" not in st.session_state:
         st.session_state.job_material = None
-    if "machining_entries" not in st.session_state:
-        st.session_state.machining_entries = []
+    if "machining1_entries" not in st.session_state:
+        st.session_state.machining1_entries = []
+    if "machining2_entries" not in st.session_state:
+        st.session_state.machining2_entries = []
     if "extra_entries" not in st.session_state:
         st.session_state.extra_entries = []
 
-    st.title("🛠️ Lathe Machining Processes")
+    st.title("🛠️ Machining Processes")
 
     # --- Step 0: Material & Labor Costs ---
     st.header("📦 Cost/Job Inputs")
@@ -61,24 +63,32 @@ def Machining():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("⚙️ Machining Processes")
-        machining_options = [ "Boring", "Drilling - Center", "Drilling - Pilot", "Drilling - Main", "Facing", "Grooving", "Knurling", "Reaming", "Threading", "Turning - Concave", "Turning - Convex", "Turning - Straight", "Turning - Taper"]
-        selected_machining = st.selectbox("Select a Process", machining_options, key="machining_select")
-        if st.button("Add Machining Process"):
-            st.session_state.machining_entries.append({"type": selected_machining})
+        st.subheader("⚙️ Lathe Machine")
+        machining1_options = [ "Boring", "Drilling - Center", "Drilling - Pilot", "Drilling - Main", "Facing", "Grooving", "Knurling", "Reaming", "Threading", "Turning - Concave", "Turning - Convex", "Turning - Straight", "Turning - Taper"]
+        selected_machining1 = st.selectbox("Select a Process", machining1_options, key="machining1_select")
+        if st.button("Add lathe operation"):
+            st.session_state.machining1_entries.append({"type": selected_machining1})
 
     with col2:
+        st.subheader("⚙️ Milling Machine")
+        machining2_options = ["Face Milling - Plain", "Face Milling - Outer Contour", "Side Milling", "Pocket Cutting", "Blanking"]
+        selected_machining2 = st.selectbox("Select a Process", machining2_options, key="machining2_select")
+        if st.button("Add milling operation"):
+            st.session_state.machining2_entries.append({"type": selected_machining2})
+
+    col1, col2 = st.columns(2)
+
+    with col1:
         st.subheader("➕ Other Processes")
         extra_options = [ "Custom", "Blanking", "Chamfering", "Parting", "Resharpening", "Tool Change"]
         selected_extra = st.selectbox("Select Other Process", extra_options, key="extra_select")
-        if st.button("Add Other Process"):
+        if st.button("Add Other operation"):
             st.session_state.extra_entries.append({"type": selected_extra})
-
 
     # Step 2: Render input fields for each Machining process
     st.divider()
-    st.header("🔩 Machining Inputs")
-    for i, entry in enumerate(st.session_state.machining_entries):
+    st.header("🔩 Lathe Machine Inputs")
+    for i, entry in enumerate(st.session_state.machining1_entries):
         ptype = entry["type"]
         st.markdown(f"### 🔧 {ptype} #{i+1}")  
 
@@ -299,10 +309,125 @@ def Machining():
             entry.update({"larger diameter": dl, "smaller diameter": ds, "length": l, "feed": f, "rpm": n, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})  
 
         
-        if st.button(f"❌ Remove", key=f"remove_{i}"):
-            st.session_state.machining_entries.pop(i)
+        if st.button(f"❌ Remove", key=f"lathe_remove_{i}"):
+            st.session_state.machining1_entries.pop(i)
             st.rerun()  # Refresh the UI immediately
 
+    st.divider()
+    st.header("🔩 Milling Machine Inputs")
+    for i, entry in enumerate(st.session_state.machining2_entries):
+        ptype = entry["type"]
+        st.markdown(f"### 🔧 {ptype} #{i+1}")  
+
+        if entry ["type"] == "Blanking":
+            col1, col2 = st.columns(2)
+            with col1:
+                l = st.number_input(f"Length (mm)", key=f"blank_mil_l_{i}", value=296.00)
+                th = st.number_input(f"Thickness (mm)", key=f"blank_mil_th_{i}", value=8.00)
+                f = st.number_input(f"Feed (mm/teeth)", key=f"blank_mil_f_{i}", value=0.25)
+                n = st.number_input(f"RPM", key=f"blank_mil_n_{i}", value=740)
+                z = st.number_input(f"No. of teeth of cutter", key=f"blank_mil_z_{i}", value=4)
+                p = st.number_input(f"No. of repetition of operation", key=f"blank_mil_p_{i}", value=1.00)
+            with col2:
+                doc = st.number_input(f"Depth of cut (mm/pass)", key=f"blank_mil_doc_{i}", value=0.20)
+                js = st.number_input(f"Job Setting Time (min)", key=f"blank_mil_js_{i}", value=5.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"blank_mil_ts_{i}", value=5.00)
+                a = st.number_input(f"Approach (mm)", key=f"blank_mil_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"blank_mil_o_{i}", value=10.00)
+                t = st.number_input(f"Tool Cost (Rs)", key=f"blank_mil_t_{i}", value=10.00)
+            entry.update({"length": l, "thickness": th, "feed": f, "rpm": n, "teeth": z, "repeat":p, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
+        
+        if entry ["type"] == "Face Milling - Plain":
+            col1, col2 = st.columns(2)
+            with col1:
+                l = st.number_input(f"Length (mm)", key=f"face_mil_l_{i}", value=296.00)
+                w = st.number_input(f"Width (mm)", key=f"face_mil_w_{i}", value=150.00)
+                thi = st.number_input(f"Initial Thickness (mm)", key=f"face_mil_thi_{i}", value=10.00)
+                thf = st.number_input(f"Final Thickness (mm)", key=f"face_mil_thf_{i}", value=8.00)
+                f = st.number_input(f"Feed (mm/teeth)", key=f"face_mil_f_{i}", value=0.25)
+                n = st.number_input(f"RPM", key=f"face_mil_n_{i}", value=740)
+                z = st.number_input(f"No. of teeth of cutter", key=f"face_mil_z_{i}", value=4)
+                d = st.number_input(f"Cutter Diameter (mm)", key=f"face_mil_d_{i}", value=12.50)
+            with col2:
+                doc = st.number_input(f"Depth of cut (mm/pass)", key=f"face_mil_doc_{i}", value=0.20)
+                p = st.number_input(f"No. of repetition of operation", key=f"face_mil_p_{i}", value=1.00)
+                js = st.number_input(f"Job Setting Time (min)", key=f"face_mil_js_{i}", value=5.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"face_mil_ts_{i}", value=5.00)
+                a = st.number_input(f"Approach (mm)", key=f"face_mil_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"face_mil_o_{i}", value=10.00)
+                t = st.number_input(f"Tool Cost (Rs)", key=f"face_mil_t_{i}", value=10.00)
+            entry.update({"length": l, "width":w, "initial thickness": thi, "final thickness": thf, "feed": f, "rpm": n, "teeth": z, "cut dia": d, "repeat":p, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
+        
+        if entry ["type"] == "Face Milling - Outer Contour":
+            col1, col2 = st.columns(2)
+            with col1:
+                li = st.number_input(f"Length (mm)", key=f"faceo_mil_li_{i}", value=280.00)
+                lf = st.number_input(f"Final Length (mm)", key=f"faceo_mil_lf_{i}", value=173.00)
+                wi = st.number_input(f"Initial Width (mm)", key=f"faceo_mil_wi_{i}", value=230.00)
+                wf = st.number_input(f"Final Width (mm)", key=f"faceo_mil_wf_{i}", value=153.00)
+                thi = st.number_input(f"Initial Thickness (mm)", key=f"faceo_mil_thi_{i}", value=20.00)
+                thf = st.number_input(f"Final Thickness (mm)", key=f"faceo_mil_thf_{i}", value=5.00)
+                f = st.number_input(f"Feed (mm/teeth)", key=f"faceo_mil_f_{i}", value=0.25)
+                n = st.number_input(f"RPM", key=f"faceo_mil_n_{i}", value=740)
+                d = st.number_input(f"Cutter Diameter (mm)", key=f"faceo_mil_d_{i}", value=12.50)
+            with col2:
+                z = st.number_input(f"No. of teeth of cutter", key=f"faceo_mil_z_{i}", value=4)
+                doc = st.number_input(f"Depth of cut (mm/pass)", key=f"faceo_mil_doc_{i}", value=0.20)
+                p = st.number_input(f"No. of repetition of operation", key=f"faceo_mil_p_{i}", value=1.00)
+                js = st.number_input(f"Job Setting Time (min)", key=f"faceo_mil_js_{i}", value=5.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"faceo_mil_ts_{i}", value=5.00)
+                a = st.number_input(f"Approach (mm)", key=f"faceo_mil_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"faceo_mil_o_{i}", value=10.00)
+                t = st.number_input(f"Tool Cost (Rs)", key=f"faceo_mil_t_{i}", value=10.00)
+            entry.update({"initial length": li, "final length": lf, "initial width":wi, "final width":wf, "initial thickness": thi, "final thickness": thf, "feed": f, "rpm": n, "cut dia": d, "teeth": z, "repeat":p, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
+        
+        if entry ["type"] == "Side Milling":
+            col1, col2 = st.columns(2)
+            with col1:
+                li = st.number_input(f"Initial Length (mm)", key=f"side_mil_li_{i}", value=306.00)
+                lf = st.number_input(f"Final Length (mm)", key=f"side_mil_lf_{i}", value=296.00)
+                w = st.number_input(f"Width (mm)", key=f"side_mil_w_{i}", value=160.00)
+                th = st.number_input(f"Thickness (mm)", key=f"side_mil_th_{i}", value=10.00)
+                f = st.number_input(f"Feed (mm/teeth)", key=f"side_mil_f_{i}", value=0.25)
+                n = st.number_input(f"RPM", key=f"side_mil_n_{i}", value=740)
+                z = st.number_input(f"No. of teeth of cutter", key=f"side_mil_z_{i}", value=4)
+                d = st.number_input(f"Cutter Diameter (mm)", key=f"side_mil_d_{i}", value=5.00)
+            with col2:
+                doc = st.number_input(f"Depth of cut (mm/pass)", key=f"side_mil_doc_{i}", value=0.20)
+                p = st.number_input(f"No. of repetition of operation", key=f"side_mil_p_{i}", value=1.00)
+                js = st.number_input(f"Job Setting Time (min)", key=f"side_mil_js_{i}", value=5.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"side_mil_ts_{i}", value=5.00)
+                a = st.number_input(f"Approach (mm)", key=f"side_mil_a_{i}", value=10.00)
+                o = st.number_input(f"Overrun (mm)", key=f"side_mil_o_{i}", value=10.00)
+                t = st.number_input(f"Tool Cost (Rs)", key=f"side_mil_t_{i}", value=10.00)
+            entry.update({"initial length": li, "final length": lf, "width":w, "thickness": th, "feed": f, "rpm": n, "teeth": z, "cut dia": d, "repeat":p, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
+        
+        if entry ["type"] == "Pocket Cutting":
+            col1, col2 = st.columns(2)
+            with col1:
+                l = st.number_input(f"Length (mm)", key=f"pocket_mil_l_{i}", value=40.00)
+                w = st.number_input(f"Width (mm)", key=f"pocket_mil_w_{i}", value=40.00)
+                ith = st.number_input(f"Initial Thickness (mm)", key=f"pocket_mil_ith_{i}", value=8.00)
+                fth = st.number_input(f"Finalal Thickness (mm)", key=f"pocket_mil_fth_{i}", value=0.00)
+                f = st.number_input(f"Feed (mm/teeth)", key=f"pocket_mil_f_{i}", value=0.25)
+                n = st.number_input(f"RPM", key=f"pocket_mil_n_{i}", value=740)
+                z = st.number_input(f"No. of teeth of cutter", key=f"pocket_mil_z_{i}", value=4)
+                d = st.number_input(f"Cutter Diameter (mm)", key=f"pocket_mil_d_{i}", value=12.50)
+            with col2:
+                doc = st.number_input(f"Depth of cut (mm/pass)", key=f"pocket_mil_doc_{i}", value=0.20)
+                p = st.number_input(f"No. of repetition of operation", key=f"pocket_mil_p_{i}", value=1.00)
+                js = st.number_input(f"Job Setting Time (min)", key=f"pocket_mil_js_{i}", value=5.00)
+                ts = st.number_input(f"Tool Setting Time (min)", key=f"pocket_mil_ts_{i}", value=5.00)
+                a = st.number_input(f"Approach (mm)", key=f"pocket_mil_a_{i}", value=0.00)
+                o = st.number_input(f"Overrun (mm)", key=f"pocket_mil_o_{i}", value=0.00)
+                t = st.number_input(f"Tool Cost (Rs)", key=f"pocket_mil_t_{i}", value=10.00)
+            entry.update({"length": l, "width":w, "initial thickness": ith, "final thickness": fth, "feed": f, "rpm": n, "teeth": z, "cut dia": d, "repeat":p, "depth of cut": doc, "job set time": js, "tool set time": ts, "approach": a, "overrun": o, "tool cost": t})
+        
+        if st.button(f"❌ Remove", key=f"milling_remove_{i}"):
+            st.session_state.machining2_entries.pop(i)
+            st.rerun()  # Refresh the UI immediately
+    
+    
     # Step 3: Render input fields for each Other process
     st.divider()
     st.header("📦 Extra Process Inputs")
@@ -371,8 +496,8 @@ def Machining():
         total_extra_cost = 0.0
         total_tool_cost = 0.0
 
-        machining_times =[]
-        for i, entry in enumerate(st.session_state.machining_entries):
+        machining1_times =[]
+        for i, entry in enumerate(st.session_state.machining1_entries):
             process_type = entry["type"]
             time = 0.0
 
@@ -475,11 +600,73 @@ def Machining():
             total_time_min += time
             total_tool_cost += entry.get("tool cost", 0)
             mid_cost = (time * (labor_cost_per_hour / 60))
-            machining_times.append({
+            machining1_times.append({
                 "process": process_type, 
                 "index": i+1, 
                 "time": time,
                 "cost": mid_cost
+            })
+
+        machining2_times =[]
+        for i, entry in enumerate(st.session_state.machining2_entries):
+            process_type = entry["type"]
+            time = 0.0
+
+            if process_type == "Blanking":
+                try:
+                    turn = (entry["thickness"]) / (entry["depth of cut"])
+                    time = (entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn * (entry["repeat"])) + (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0 
+            
+            if process_type == "Face Milling - Plain":
+                try:
+                    turn1 = ((entry["initial thickness"]) - (entry["final thickness"])) / (entry["depth of cut"])
+                    turn2 = (entry["width"]) / (entry["cut dia"])
+                    time = (entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn1 * turn2 * (entry["repeat"])) + (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0
+
+            if process_type == "Face Milling - Outer Contour":
+                try:
+                    turn1 = ((entry["initial length"]) - (entry["final length"])) / (entry["cut dia"])
+                    turn2 = ((entry["initial width"]) - (entry["final width"])) / (entry["cut dia"])
+                    turn3 = ((entry["initial thickness"]) - (entry["final thickness"])) / (entry["depth of cut"])
+
+                    t1 = (entry["approach"] + entry["overrun"] + (entry["initial length"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn2 * turn3)
+                    t2 = (entry["approach"] + entry["overrun"] + ((entry["initial width"] + entry["final width"]) / 2)) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn1 * turn3)
+                    t3 = (entry["approach"] + entry["overrun"] + ((entry["initial length"] + entry["final length"]) / 2)) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn2 * turn3)
+                    t4 = (entry["approach"] + entry["overrun"] + (entry["final width"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn1 * turn3)
+
+                    time =((t1 + t2 + t3 + t4)* (entry["repeat"])) + (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0
+
+
+            if process_type == "Side Milling":
+                try:
+                    turn1 = (entry["thickness"]) / (entry["depth of cut"])
+                    turn2 = ((entry["initial length"]) - (entry["final length"])) / (entry["cut dia"])
+                    time = (entry["approach"] + entry["overrun"] + (entry["width"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn1 * turn2 * (entry["repeat"])) + (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0 
+
+            if process_type == "Pocket Cutting":
+                try:
+                    turn1 = ((entry["initial thickness"]) - (entry["final thickness"])) / (entry["depth of cut"])
+                    turn2 = (entry["width"]) / (entry["cut dia"])
+                    time = (entry["approach"] + entry["overrun"] + (entry["length"])) / (entry["rpm"] * entry["feed"] * entry["teeth"]) * (turn1 * turn2 * (entry["repeat"])) + (entry["job set time"] + entry["tool set time"])
+                except ZeroDivisionError:
+                    time = 0
+
+            total_time_min += time
+            total_tool_cost += entry.get("tool cost", 0)
+            mid_cost = (time * (labor_cost_per_hour / 60))
+            machining2_times.append({
+                "process": process_type, 
+                "index": i+1, 
+                "time": time,
+                "cost": mid_cost 
             })
 
         extra_times = []
@@ -513,7 +700,8 @@ def Machining():
         st.session_state.labor_cost = (total_time_min / 60) * labor_cost_per_hour
         st.session_state.total_cost = material_cost + st.session_state.labor_cost + total_extra_cost + total_tool_cost
         st.session_state.result_ready = True
-        st.session_state.machining_times = machining_times
+        st.session_state.machining1_times = machining1_times
+        st.session_state.machining2_times = machining2_times
         st.session_state.extra_times = extra_times
         st.session_state.page = "Result"
         st.rerun()
@@ -614,16 +802,32 @@ def generate_pdf():
     pdf.ln(5)
 
     # --- Process Time Tables ---
-    if st.session_state.machining_times:
+    if st.session_state.machining1_times:
         pdf.set_font("Helvetica", 'B', 12)
-        pdf.cell(0, 10, 'Machining Process Times', ln=True)
+        pdf.cell(0, 10, 'Lathe Machining Time', ln=True)
         pdf.set_font("Helvetica", 'B', 10)
         pdf.cell(50, 8, "Process", border=1)
         pdf.cell(40, 8, "Time (min)", border=1)
         pdf.cell(40, 8, "Cost (Rs.)", border=1)
         pdf.ln()
         pdf.set_font("Helvetica", '', 10)
-        for t in st.session_state.machining_times:
+        for t in st.session_state.machining1_times:
+            pdf.cell(50, 8, f"{t['process']} #{t['index']}", border=1)
+            pdf.cell(40, 8, f"{t['time']:.2f}", border=1)
+            pdf.cell(40, 8, f"{t['cost']:.2f}", border=1)
+            pdf.ln()
+        pdf.ln(5)
+
+    if st.session_state.machining2_times:
+        pdf.set_font("Helvetica", 'B', 12)
+        pdf.cell(0, 10, 'Milling Machine Time', ln=True)
+        pdf.set_font("Helvetica", 'B', 10)
+        pdf.cell(50, 8, "Process", border=1)
+        pdf.cell(40, 8, "Time (min)", border=1)
+        pdf.cell(40, 8, "Cost (Rs.)", border=1)
+        pdf.ln()
+        pdf.set_font("Helvetica", '', 10)
+        for t in st.session_state.machining2_times:
             pdf.cell(50, 8, f"{t['process']} #{t['index']}", border=1)
             pdf.cell(40, 8, f"{t['time']:.2f}", border=1)
             pdf.cell(40, 8, f"{t['cost']:.2f}", border=1)
@@ -647,14 +851,14 @@ def generate_pdf():
         pdf.ln(5)
 
     # --- Full DataFrames ---
-    #pdf.table("Machining Entries", st.session_state.machining_entries)
+    #pdf.table("Machining Entries", st.session_state.machining1_entries)
     #pdf.table("Extra Process Entries", st.session_state.extra_entries)
 
     # Save and offer download
     from io import BytesIO
 
     # Generate PDF content as string, then encode to bytes
-    pdf_data = pdf.output(dest='S').encode('latin1')
+    pdf_data = bytes(pdf.output(dest='S'))
 
     # Write to in-memory buffer
     pdf_buffer = BytesIO()
@@ -677,7 +881,6 @@ def Result():
 
     st.subheader("✅ Summary")
     st.success(f"⏱️ Total Time: {st.session_state.total_time_min//60:.2f} hr {st.session_state.total_time_min%60:.2f} min")
-    st.success(f"Handling Time assumed fo each process: 5 min")
     st.success(f"👷 Labor Cost: Rs. {st.session_state.labor_cost:.2f}")
     st.success(f"📦 Job Material : {st.session_state.job_material}")
     st.success(f"📦 Material Cost: Rs. {st.session_state.material_cost:.2f}")
@@ -686,14 +889,24 @@ def Result():
     st.header(f"💰 Total Estimated Cost: Rs. {st.session_state.total_cost:.2f}")
 
     st.markdown("---")
-    st.subheader("⚙️ Machining Process Times")
-    for t in st.session_state.machining_times:
+    st.subheader("⚙️ Lathe Machining Time")
+    for t in st.session_state.machining1_times:
         if 'cost' not in t:
             st.write("Missing 'cost' in:", t)
         st.write(f"{t['process']} #{t['index']} → {t['time']:.2f} min → Rs. {t['cost']:.2f}")
 
-    st.subheader("📋 All Machining Entries")
-    st.dataframe(st.session_state.machining_entries)
+    st.subheader("📋 Lathe Machine Entries")
+    st.dataframe(st.session_state.machining1_entries)
+
+    st.divider()
+    st.subheader("⚙️ Milling Machining Time")
+    for t in st.session_state.machining2_times:
+        if 'cost' not in t:
+            st.write("Missing 'cost' in:", t)
+        st.write(f"{t['process']} #{t['index']} → {t['time']:.2f} min → Rs. {t['cost']:.2f}")
+
+    st.subheader("📋 Milling Machine Entries")
+    st.dataframe(st.session_state.machining2_entries)
 
     st.divider()
     st.subheader("➕ Other Processes")
@@ -737,3 +950,4 @@ pages = {
 
 # --- Load Selected Page ---
 pages[st.session_state.page]()
+
