@@ -858,7 +858,8 @@ def generate_pdf():
     from io import BytesIO
 
     # Generate PDF content as string, then encode to bytes
-    pdf_data = bytes(pdf.output(dest='S'))
+    pdf_data = pdf.output(dest='S').encode('latin-1')
+
 
     # Write to in-memory buffer
     pdf_buffer = BytesIO()
@@ -950,4 +951,5 @@ pages = {
 
 # --- Load Selected Page ---
 pages[st.session_state.page]()
+
 
